@@ -32,6 +32,14 @@ const verifiedUser = async (getUser) => {
       },
     });
 
+    const myTransport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
+
     const buildFile = path.join(__dirname, "../views/AccountCreated.ejs");
 
     const data = await ejs.renderFile(buildFile, {
@@ -93,7 +101,7 @@ const verifiedUser = async (getUser) => {
 </container>`,
     };
 
-    transporter.sendMail(mailOptions, () => {
+    myTransport.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
