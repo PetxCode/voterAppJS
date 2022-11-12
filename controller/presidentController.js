@@ -73,7 +73,7 @@ const createPresident = async (req, res) => {
           { new: true }
         );
 
-        acceptance(email, user, fullName).then((result) => {
+        acceptance(email, positioned).then((result) => {
           console.log("sent: ", result);
         });
 

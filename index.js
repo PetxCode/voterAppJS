@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const DB = require("./util/db");
+// const DB = require("./util/db");
 const http = require("http");
 const mongoose = require("mongoose");
 const { Server } = require("socket.io");
@@ -22,7 +22,7 @@ const socialVote = require("./router/voters/socialVote");
 const proVote = require("./router/voters/proVoter");
 const legalVote = require("./router/voters/legalVote");
 
-const port = 2211;
+const port = 2233;
 const app = express();
 
 const server = http.createServer(app);
@@ -30,7 +30,18 @@ const io = new Server(server, {
   cors: { origin: "*" },
 });
 
-DB;
+const url = "mongodb://localhost/votersDB";
+const newURL =
+  "mongodb+srv://AuthClass:AuthClass@codelab.u4drr.mongodb.net/VotersDB?retryWrites=true&w=majority";
+const urlOnline =
+  "mongodb+srv://OneChurch:OneChurch@cluster0.q3zol.mongodb.net/youthCouncil?retryWrites=true&w=majority";
+
+const url2 =
+  "mongodb+srv://newStudent:newStudent@cluster0.gkpjkup.mongodb.net/voterDB?retryWrites=true&w=majority";
+
+mongoose.connect(urlOnline).then(() => {
+  console.log("Database is now well connected!");
+});
 
 app.use(cors());
 app.use(express.json());

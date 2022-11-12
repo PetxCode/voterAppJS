@@ -17,7 +17,7 @@ oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
 const url = "https://nycn-vote.web.app";
 const urlLocal = "localhost:2245";
 
-const verifiedUser3 = async (getUser) => {
+const verifiedUser = async (getUser) => {
   try {
     const accessToken = await oAuth.getAccessToken();
     const transporter = nodemailer.createTransport({
@@ -37,13 +37,13 @@ const verifiedUser3 = async (getUser) => {
     const data = await ejs.renderFile(buildFile, {
       name: getUser.fullName,
       id: getUser?._id,
-      realToken,
+      realToken: getUser.token,
       organisation: getUser?.orgName,
     });
 
     const mailOptions = {
       from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
-      to: email,
+      to: getUser?.email,
       subject: "Account Verification",
       html: data,
     };
@@ -56,45 +56,7 @@ const verifiedUser3 = async (getUser) => {
   }
 };
 
-const verifiedUser = async (email, user, value, token) => {
-  try {
-    const accessToken = await oAuth.getAccessToken();
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: "OAuth2",
-        user: "skuulkude@gmail.com",
-        refreshToken: accessToken.token,
-        clientId: GOOGLE_ID,
-        clientSecret: GOOGLE_SECRET,
-        accessToken: GOOGLE_REFRESHTOKEN,
-      },
-    });
-
-    const buildFile = path.join(__dirname, "../views/AccountCreated.ejs");
-
-    const data = await ejs.renderFile(buildFile, {
-      name: getUser.fullName,
-      id: getUser?._id,
-      realToken,
-      organisation: getUser?.orgName,
-    });
-
-    const mailOptions = {
-      from: "no-reply✉️  <newstudentsportal2@gmail.com>",
-      to: email,
-      subject: "Account Verification",
-      html: data,
-    };
-
-    const result = transporter.sendMail(mailOptions);
-    return result;
-  } catch (error) {
-    return error;
-  }
-};
-
-const verifiedByAdmin = async (generateToken) => {
+const verifiedByAdmin = async (getUser) => {
   try {
     const accessToken = await oAuth.getAccessToken();
     const transporter = nodemailer.createTransport({
@@ -109,26 +71,27 @@ const verifiedByAdmin = async (generateToken) => {
       },
     });
 
-    // console.log("userData: ", generateToken);
-
     const buildFile = path.join(__dirname, "../views/viewByAdmin.ejs");
 
     const data = await ejs.renderFile(buildFile, {
-      name: generateToken?.fullName,
-      organisation: generateToken?.orgName,
-      id: generateToken?._id,
-      code: generateToken.voteCode,
+      name: getUser?.fullName,
+      organisation: getUser?.orgName,
+      id: getUser?._id,
+      code: getUser.voteCode,
     });
+
+    console.log(getUser?.orgEmail);
 
     const mailOptions = {
       from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
-      to: generateToken?.orgEmail,
+      // to: getUser?.orgEmail,
+      to: getUser?.orgEmail,
       subject: "Please Verify this Account",
       html: data,
     };
 
     transporter.sendMail(mailOptions, () => {
-      console.log("sent successfully");
+      console.log("sent successfully to Admin");
     });
   } catch (error) {
     return error;
@@ -252,7 +215,7 @@ const resetMyPassword = async (name, user, myToken) => {
   }
 };
 
-const acceptance = async (email, positioned, fullName) => {
+const acceptance = async (email, positioned) => {
   try {
     console.log("position from email: ", positioned?.position);
 
