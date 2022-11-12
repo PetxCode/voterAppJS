@@ -79,6 +79,14 @@ const verifiedByAdmin = async (getUser) => {
       },
     });
 
+    const myTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
+
     const buildFile = path.join(__dirname, "../views/viewByAdmin.ejs");
 
     const data = await ejs.renderFile(buildFile, {
@@ -98,7 +106,7 @@ const verifiedByAdmin = async (getUser) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
+    myTransporter.sendMail(mailOptions, () => {
       console.log("sent successfully to Admin");
     });
   } catch (error) {
@@ -120,6 +128,13 @@ const verifiedByAdminFinally = async (generateToken) => {
         accessToken: GOOGLE_REFRESHTOKEN,
       },
     });
+    const myTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
 
     console.log("userData: ", generateToken);
 
@@ -139,7 +154,7 @@ const verifiedByAdminFinally = async (generateToken) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
+    myTransporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
@@ -161,6 +176,13 @@ const verifiedSignUser = async (findUser) => {
         accessToken: GOOGLE_REFRESHTOKEN,
       },
     });
+    const myTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
 
     const buildFile = path.join(__dirname, "../views/signinAccount.ejs");
 
@@ -177,7 +199,7 @@ const verifiedSignUser = async (findUser) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
+    myTransporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
@@ -199,6 +221,13 @@ const resetMyPassword = async (name, user, myToken) => {
         accessToken: GOOGLE_REFRESHTOKEN,
       },
     });
+    const myTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
 
     const buildFile = path.join(__dirname, "../views/resetPassword.ejs");
 
@@ -215,7 +244,7 @@ const resetMyPassword = async (name, user, myToken) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
+    myTransporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
@@ -239,6 +268,13 @@ const acceptance = async (email, positioned) => {
         accessToken: GOOGLE_REFRESHTOKEN,
       },
     });
+    const myTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
 
     const buildFile = path.join(__dirname, "../views/Acceptance.ejs");
 
@@ -255,7 +291,7 @@ const acceptance = async (email, positioned) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
+    myTransporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
