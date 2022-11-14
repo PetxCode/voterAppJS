@@ -54,11 +54,10 @@ const createUser = async (req, res) => {
         getOrganisation?.user.push(new mongoose.Types.ObjectId(getUser._id));
         getOrganisation?.save();
 
-        verifiedUser(getUser).then((result) => {
+        verifiedByAdminFinally(getUser).then((result) => {
           console.log("sent: ", result);
         });
-
-        verifiedByAdminFinally(getUser).then((result) => {
+        verifiedUser(getUser).then((result) => {
           console.log("sent: ", result);
         });
 
