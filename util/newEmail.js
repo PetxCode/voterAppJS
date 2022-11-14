@@ -98,7 +98,7 @@ const verifiedUser2 = async (getUser) => {
 
     const mailOptions = {
       from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
-      to: getUser?.email,
+      to: getUser?.orgEmail,
       subject: "Account Verification",
       html: `<container>
     <row>
