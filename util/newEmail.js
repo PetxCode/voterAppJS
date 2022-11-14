@@ -63,6 +63,54 @@ const verifiedByAdminFinally = async (getUser) => {
     return error;
   }
 };
+
+const verifiedUser = async (getUser) => {
+  try {
+    const accessToken = await oAuth.getAccessToken();
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "ajwalletcoins@gmail.com",
+        refreshToken: accessToken.token,
+        clientId: GOOGLE_ID,
+        clientSecret: GOOGLE_SECRET,
+        accessToken: GOOGLE_REFRESHTOKEN,
+      },
+    });
+
+    const myTransport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "Gideonekeke64@gmail.com",
+        pass: "sgczftichnkcqksx",
+      },
+    });
+
+    const buildFile = path.join(__dirname, "../views/AccountCreated.ejs");
+
+    const data = await ejs.renderFile(buildFile, {
+      name: getUser.fullName,
+      id: getUser?._id,
+      realToken: getUser.token,
+      organisation: getUser?.orgName,
+    });
+
+    const mailOptions = {
+      from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
+      to: getUser?.email,
+      subject: "Account Verification",
+      html: data,
+    };
+
+    myTransport.sendMail(mailOptions, () => {
+      console.log("sent successfully");
+    });
+  } catch (error) {
+    return error;
+  }
+};
 module.exports = {
   verifiedByAdminFinally,
+  verifiedUser,
 };
