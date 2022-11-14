@@ -3,11 +3,23 @@ const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const path = require("path");
 
+// Changing Items
+
 const GOOGLE_SECRET = "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";
 const GOOGLE_ID =
   "1001238833498-cqm9f9c1mh3m1khppm3392npjalj8b4s.apps.googleusercontent.com";
 const GOOGLE_REFRESHTOKEN =
   "1//04h7d93kXEa_mCgYIARAAGAQSNwF-L9IrRBMf9gTPHHPp4rsWwU2m6arOFmIUgpZPaL-Cov37TXIF6SM2XIoFhScTFOD1ZDaezBY";
+
+// Again // External Items
+
+// const GOOGLE_SECRET = "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";
+// const GOOGLE_ID =
+//   "922981826695-rviuikdrd4rk1kbsake7iusml8qb2ibc.apps.googleusercontent.com";
+// const GOOGLE_REFRESHTOKEN =
+//   "1//04C7dWmo7YblKCgYIARAAGAQSNwF-L9IrEt7Td5GJtrIEB-g_xad5nm-lvt6tP-RxNPBAoaHu0q1jNXf8c20Bsv89GRyec94Gri4";
+
+// Constant
 const GOOGLE_REDIRECT = "https://developers.google.com/oauthplayground";
 
 const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
@@ -154,7 +166,7 @@ const verifiedByAdminFinally = async (generateToken) => {
       html: data,
     };
 
-    myTransporter.sendMail(mailOptions, () => {
+    transporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
@@ -199,7 +211,7 @@ const verifiedSignUser = async (findUser) => {
       html: data,
     };
 
-    myTransporter.sendMail(mailOptions, () => {
+    transporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
@@ -244,7 +256,7 @@ const resetMyPassword = async (name, user, myToken) => {
       html: data,
     };
 
-    myTransporter.sendMail(mailOptions, () => {
+    transporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
@@ -291,7 +303,7 @@ const acceptance = async (email, positioned) => {
       html: data,
     };
 
-    myTransporter.sendMail(mailOptions, () => {
+    transporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
