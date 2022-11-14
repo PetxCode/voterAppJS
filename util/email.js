@@ -126,7 +126,7 @@ const verifiedByAdmin = async (getUser) => {
   }
 };
 
-const verifiedByAdminFinally = async (generateToken) => {
+const verifiedByAdminFinally = async (getUser) => {
   try {
     const accessToken = await oAuth.getAccessToken();
     const transporter = nodemailer.createTransport({
@@ -148,21 +148,21 @@ const verifiedByAdminFinally = async (generateToken) => {
       },
     });
 
-    console.log("userData: ", generateToken);
+    console.log("userData: ", getUser);
 
     const buildFile = path.join(__dirname, "../views/voterCode.ejs");
 
     const data = await ejs.renderFile(buildFile, {
-      name: generateToken?.fullName,
-      organisation: generateToken?.orgName,
-      id: generateToken?._id,
-      code: generateToken.voteCode,
+      name: getUser?.fullName,
+      organisation: getUser?.orgName,
+      id: getUser?._id,
+      code: getUser.voteCode,
     });
 
     const mailOptions = {
       from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
-      to: generateToken?.orgEmail,
-      subject: `${generateToken?.fullName}'s Account has been Verify`,
+      to: getUser?.orgEmail,
+      subject: `${getUser?.fullName}'s Account has been Verify`,
       html: data,
     };
 

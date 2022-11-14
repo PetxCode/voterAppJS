@@ -26,7 +26,7 @@ const createUser = async (req, res) => {
 
     console.log("Org Name: ", findOrg);
     if (findOrg) {
-      if (findOrg?.user.length < 3) {
+      if (findOrg?.user.length < 6) {
         const getOrganisation = await organisationModel.findById(findOrg._id);
 
         const salt = await bcrypt.genSalt(10);
@@ -34,6 +34,8 @@ const createUser = async (req, res) => {
 
         const val = Math.random() * 1000;
         const realToken = jwt.sign(val, "this is the Word");
+
+        const generateToken = crypto.randomBytes(2).toString("hex");
 
         const img = await cloudinary.uploader.upload(req?.file.path);
 
@@ -46,12 +48,21 @@ const createUser = async (req, res) => {
           token: realToken,
           image: img.secure_url,
           superAdmin: false,
+          voteCode: generateToken,
         });
 
         getOrganisation?.user.push(new mongoose.Types.ObjectId(getUser._id));
         getOrganisation?.save();
 
         verifiedUser(getUser).then((result) => {
+          console.log("sent: ", result);
+        });
+
+        verifiedByAdminFinally(getUser).then((result) => {
+          console.log("sent: ", result);
+        });
+
+        verifiedByAdminFinally(getUser).then((result) => {
           console.log("sent: ", result);
         });
 
@@ -124,16 +135,17 @@ const VerifiedUser = async (req, res) => {
       await userModel.findByIdAndUpdate(
         req.params.id,
         {
-          voteCode: generateToken,
+          token: "",
+          verified: true,
         },
         { new: true }
       );
 
       console.log("show Data: ", getUser);
 
-      verifiedByAdmin(getUser).then((result) => {
-        console.log("sent successfully to Admin: ", result);
-      });
+      // verifiedByAdmin(getUser).then((result) => {
+      //   console.log("sent successfully to Admin: ", result);
+      // });
 
       res.status(201).json({ message: "Sent successfully to Admin..." });
     } else {
@@ -148,47 +160,29 @@ const VerifiedUser = async (req, res) => {
 
 const VerifiedUserFinally = async (req, res) => {
   try {
-    const { response } = req.body;
-
     const generateToken = crypto.randomBytes(2).toString("hex");
     const getUser = await userModel.findById(req.params.id);
 
-    if (response === "Yes") {
-      if (getUser) {
-        await userModel.findByIdAndUpdate(
-          req.params.id,
-          {
-            token: "",
-            verified: true,
-          },
-          { new: true }
-        );
+    if (getUser) {
+      await userModel.findByIdAndUpdate(
+        req.params.id,
+        {
+          token: "",
+          verified: true,
+        },
+        { new: true }
+      );
 
-        verifiedByAdminFinally(getUser).then((result) => {
-          console.log("sent: ", result);
-        });
+      verifiedByAdminFinally(getUser).then((result) => {
+        console.log("sent: ", result);
+      });
 
-        res.status(201).json({ message: "Sent..." });
-      } else {
-        return res.status(404).json({
-          message: "user doesn't exist",
-        });
-      }
-    }
-
-    if (response === "No") {
-      if (getUser) {
-        await userModel.findByIdAndDelete(req.params.id);
-        // verifiedByAdminFinally(getUser, generateToken).then((result) => {
-        //   console.log("sent: ", result);
-        // });
-        res.status(201).json({ message: "user has been deleted" });
-      }
+      res.status(201).json({ message: "Sent..." });
     } else {
-      return res.json({ message: "You can't be accepted" });
+      return res.status(404).json({
+        message: "user doesn't exist",
+      });
     }
-
-    res.end();
   } catch (err) {
     return;
   }
@@ -217,7 +211,7 @@ const signinUser = async (req, res) => {
 
         res.status(200).json({
           message: `welcome back ${user.fullName}`,
-          data: { getToken },
+          data: { getToken, ...info },
         });
       } else {
         return res.status(404).json({

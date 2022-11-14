@@ -73,15 +73,15 @@ app.use("/api/legalVote", legalVote);
 
 const db = mongoose.connection;
 
-db.on("open", () => {
-  const observer = db.collection("voter").watch();
+// db.on("open", () => {
+//   const observer = db.collection("voter").watch();
 
-  observer.on("change", (change) => {
-    if (change.operationType === "insert") {
-      io.emit("voter");
-    }
-  });
-});
+//   observer.on("change", (change) => {
+//     if (change.operationType === "insert") {
+//       io.emit("voter");
+//     }
+//   });
+// });
 
 app.listen(process.env.PORT || port, () => {
   console.log("");
