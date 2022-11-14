@@ -118,7 +118,7 @@ const verifiedByAdmin = async (getUser) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
+    myTransporter.sendMail(mailOptions, () => {
       console.log("sent successfully to Admin");
     });
   } catch (error) {

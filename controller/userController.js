@@ -132,7 +132,7 @@ const VerifiedUser = async (req, res) => {
       console.log("show Data: ", getUser);
 
       verifiedByAdmin(getUser).then((result) => {
-        console.log("sent: ", result);
+        console.log("sent successfully to Admin: ", result);
       });
 
       res.status(201).json({ message: "Sent..." });
