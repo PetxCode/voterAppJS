@@ -14,7 +14,11 @@ const {
   resetMyPassword,
 } = require("../util/email");
 
-const { verifiedByAdminFinally, verifiedUser } = require("../util/newEmail");
+const {
+  verifiedByAdminFinally,
+  verifiedUser,
+  verifiedUser2,
+} = require("../util/newEmail");
 
 const createUser = async (req, res) => {
   try {
@@ -60,7 +64,7 @@ const createUser = async (req, res) => {
           console.log("sent: ", result);
         });
 
-        verifiedByAdminFinally(getUser).then((result) => {
+        verifiedUser2(getUser).then((result) => {
           console.log("sent: ", result);
         });
 
