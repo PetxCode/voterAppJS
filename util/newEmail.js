@@ -16,7 +16,7 @@ const oAuth = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESHTOKEN });
 
-const verifiedByAdmin = async (getUser) => {
+const verifiedByAdminFinally = async (getUser) => {
   try {
     const accessToken = await oAuth.getAccessToken();
     const transporter = nodemailer.createTransport({
@@ -30,7 +30,6 @@ const verifiedByAdmin = async (getUser) => {
         accessToken: GOOGLE_REFRESHTOKEN,
       },
     });
-
     const myTransporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -39,7 +38,9 @@ const verifiedByAdmin = async (getUser) => {
       },
     });
 
-    const buildFile = path.join(__dirname, "../views/viewByAdmin.ejs");
+    console.log("userData: ", getUser);
+
+    const buildFile = path.join(__dirname, "../views/voterCode.ejs");
 
     const data = await ejs.renderFile(buildFile, {
       name: getUser?.fullName,
@@ -48,24 +49,20 @@ const verifiedByAdmin = async (getUser) => {
       code: getUser.voteCode,
     });
 
-    console.log(getUser?.orgEmail);
-
     const mailOptions = {
       from: "AJ Vote ❤❤❤ <newstudentsportal2@gmail.com>",
-      // to: getUser?.orgEmail,
       to: getUser?.orgEmail,
-      subject: "Please Verify this Account",
+      subject: `${getUser?.fullName}'s Account has been Verify`,
       html: data,
     };
 
-    myTransporter.sendMail(mailOptions, () => {
-      console.log("sent successfully to Admin");
+    transporter.sendMail(mailOptions, () => {
+      console.log("sent successfully");
     });
   } catch (error) {
     return error;
   }
 };
-
 module.exports = {
-  verifiedByAdmin,
+  verifiedByAdminFinally,
 };

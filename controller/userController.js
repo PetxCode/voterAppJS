@@ -14,6 +14,8 @@ const {
   resetMyPassword,
 } = require("../util/email");
 
+// const { verifiedByAdminFinally } = require("../util/newEmail");
+
 const createUser = async (req, res) => {
   try {
     const { fullName, organisationName, email, password } = req.body;

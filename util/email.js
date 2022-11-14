@@ -211,7 +211,7 @@ const verifiedSignUser = async (findUser) => {
       html: data,
     };
 
-    transporter.sendMail(mailOptions, () => {
+    myTransporter.sendMail(mailOptions, () => {
       console.log("sent successfully");
     });
   } catch (error) {
