@@ -135,7 +135,7 @@ const VerifiedUser = async (req, res) => {
         console.log("sent successfully to Admin: ", result);
       });
 
-      res.status(201).json({ message: "Sent..." });
+      res.status(201).json({ message: "Sent successfully to Admin..." });
     } else {
       return res.status(404).json({
         message: "user doesn't exist",

@@ -26,7 +26,7 @@ router.route("/:id").get(readUser);
 
 router.route("/organisation/:id").get(readOrgUsers);
 
-router.route("/:id/token").get(VerifiedUser);
+router.route("/:id/token").post(VerifiedUser);
 
 // goto view!
 // router.route("/:id/view").post(VerifiedUserFinally);
