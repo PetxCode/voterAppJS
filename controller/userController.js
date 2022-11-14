@@ -10,11 +10,11 @@ const {
   verifiedUser,
   verifiedSignUser,
   verifiedByAdmin,
-  verifiedByAdminFinally,
+  // verifiedByAdminFinally,
   resetMyPassword,
 } = require("../util/email");
 
-// const { verifiedByAdminFinally } = require("../util/newEmail");
+const { verifiedByAdminFinally } = require("../util/newEmail");
 
 const createUser = async (req, res) => {
   try {
